@@ -5,7 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
 
 public class Cliente {
 	
@@ -16,7 +16,7 @@ public class Cliente {
 		try {
 
 			// cria conexao entre o cliente e servidor
-			Socket socket = new Socket("localhost", 5555);
+			Socket socket = new Socket("localhost", Info.porta);
 
 			// criação dos streams de entrada e saída
 			ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
@@ -26,7 +26,7 @@ public class Cliente {
 				System.out.println("Enviando mensagem...");
 				
 				//gera a mensagem para o cliente
-				JSONObject matriz = Mensagem.geraMatriz();
+				JSONArray matriz = Mensagem.geraMatriz();
 				output.writeObject(matriz);
 				output.flush(); // libera buffer para envio
 				System.out.println("Mensagem " + matriz + " enviada.");
