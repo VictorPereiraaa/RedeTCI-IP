@@ -7,9 +7,9 @@ import java.net.Socket;
 
 import org.json.simple.JSONArray;
 
+
 public class Cliente {
 	
-
 	private static boolean isRunning = true;
 	
 	public static void main(String[] args) throws ClassNotFoundException, InterruptedException {
@@ -29,17 +29,16 @@ public class Cliente {
 				JSONArray matriz = Mensagem.geraMatriz();
 				output.writeObject(matriz);
 				output.flush(); // libera buffer para envio
-				System.out.println("Mensagem " + matriz + " enviada.");
-				
-				//fazer o tratamento da matriz transposta recebida
-				//
-				//
-				
-				String obj =  (String) input.readObject();
-				System.out.println("Resposta: " + obj);
+			
+				System.out.println("Mensagem " + matriz + " enviada");
+			
+				//recebe a transposta do Server
+				JSONArray transposta = (JSONArray) input.readObject();
+				System.out.println("Resposta: " + transposta);
 				
 				Thread.sleep(Info.delay);	
 			}
+			//encerra as streams
 			input.close();
 			output.close();
 			socket.close();

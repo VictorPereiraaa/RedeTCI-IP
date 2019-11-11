@@ -5,12 +5,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Iterator;
 
 import org.json.simple.JSONArray;
-import org.json.simple.parser.JSONParser;
 
-import org.json.simple.JSONObject;
 
 public class Server {
 
@@ -27,35 +24,31 @@ public class Server {
 		return socket;
 	}
 
-	// faz o tratamento do protocolo da aplicação
+	// tratando conversação entre cliente e servidor (protocolo)
 	private void trataConexao(Socket socket) throws IOException, ClassNotFoundException {
-
 		try {
 			// streams de entrada e saída
 			ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
 			ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
 
-			// tratando conversação entra cliente e servidor (protocolo)
+			// recebe objeto do Cliente
 			JSONArray msgRecebida = (JSONArray) input.readObject();
-			System.out.println("Mensagem recebida..." + msgRecebida.toString());
 
-			// fazer a transposta do obj recebido
+			System.out.println("Mensagem recebida...");
+			System.out.println(msgRecebida);
+
+			// faz a transposta da matriz recebida
 			JSONArray transposta = new JSONArray();
+			transposta = Mensagem.geraTransposta(msgRecebida);
 			
-			for(Object o: msgRecebida) {
-				if(o instanceof JSONObject) {
-					System.out.println(o.toString());
-					int x = (int)((JSONObject) o).get("X");
-					System.out.println(x);
-					
-				}
-				
-			}
-
+			System.out.println("Mensagem gerada...");
+			System.out.println(transposta);
+			
+			//retorna a matriz transposta
 			output.writeObject(transposta);
 			output.flush(); // marcar o fim da msg
 
-			// fecha as streams
+			// encerra as streams
 			input.close();
 			output.close();
 		} catch (IOException e) {
@@ -70,7 +63,6 @@ public class Server {
 	}
 
 	public static void main(String[] args) throws ClassNotFoundException {
-
 		try {
 			Server server = new Server();
 			System.out.println(Info.getNomeVersao());
