@@ -6,48 +6,50 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import org.json.simple.JSONArray;
-
 
 public class Server {
 
 	private ServerSocket serverSocket;
 
-	// inicia um novo servidor
-	private void criarServerSocket(int porta) throws IOException {
+	//Método que inicia um novo Server
+	private void criaServer(int porta) throws IOException {
 		serverSocket = new ServerSocket(porta);
 	}
 
-	// aceita a conexão
+	//Método que aceita a conexão
 	private Socket esperaConexao() throws IOException {
 		Socket socket = serverSocket.accept();
 		return socket;
 	}
+	
+	//Método que encerra o Server
+	private void encerraServer(Socket socket) throws IOException {
+		socket.close();
+	}
 
-	// tratando conversação entre cliente e servidor (protocolo)
+	//Método que trata conversação entre cliente e servidor (protocolo)
 	private void trataConexao(Socket socket) throws IOException, ClassNotFoundException {
 		try {
 			// streams de entrada e saída
 			ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
 			ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
 
-			// recebe objeto do Cliente
+			// recebe matriz de Cliente
 			Matriz matrizRecebida = (Matriz) input.readObject();
-
 			System.out.println("Mensagem recebida...");
-			System.out.println(matrizRecebida);
-
-			// faz a transposta da matriz recebida
-			JSONArray transposta = new JSONArray();
-			//transposta = Mensagem.geraTransposta(matrizRecebida);
+			Matriz.imprimeMatriz(matrizRecebida);
+		
+			//transpoem matriz
+			Matriz transposta = new Matriz();
+			transposta.geraMatriz();
+			Matriz.transpoemMatriz(matrizRecebida, transposta);
+			System.out.println("Transposta gerada: ");
+			Matriz.imprimeMatriz(transposta);
 			
-			System.out.println("Mensagem gerada...");
-			System.out.println(transposta);
-			
-			//retorna a matriz transposta
+			//devolve a matriz transposta para Cliente
 			output.writeObject(transposta);
-			output.flush(); // marcar o fim da msg
-
+			output.flush();
+			
 			// encerra as streams
 			input.close();
 			output.close();
@@ -57,7 +59,7 @@ public class Server {
 			System.out.println("Erro: " + e.getMessage());
 		} finally {
 			// final do tratamento do protocolo
-			socket.close();
+			encerraServer(socket);
 		}
 
 	}
@@ -67,7 +69,7 @@ public class Server {
 			Server server = new Server();
 			System.out.println(Info.getNomeVersao());
 			System.out.println("Aguardando conexão...");
-			server.criarServerSocket(Info.porta);
+			server.criaServer(Info.porta);
 			while (true) {
 				Socket socket = server.esperaConexao(); // protocolo
 				System.out.println("Cliente conectado.");

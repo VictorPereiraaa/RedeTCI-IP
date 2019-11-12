@@ -1,15 +1,13 @@
 package networkEcho;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class Matriz {
+public class Matriz implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 	private int[][] matriz;
 	private static final Random randGen = new Random();
-
-	public int[][] getMatriz() {
-		return matriz;
-	}
 
 	public void setMatriz(int[][] m) {
 		this.matriz = m;
@@ -25,41 +23,23 @@ public class Matriz {
 		}
 	}
 
-	public void imprimeMatriz() {
+	public static void imprimeMatriz(Matriz mat){
+
 		for (int linha = 0; linha < Info.tamMax; linha++) {
 			for (int coluna = 0; coluna < Info.tamMax; coluna++) {
-				System.out.print(this.matriz[linha][coluna] + " ");
+				System.out.print(mat.matriz[linha][coluna] + " ");
 			}
 			System.out.println();
 		}
-		System.out.println();
 	}
 
-	public Matriz transpoemMatriz(Matriz matriz) {
-		Matriz transposta = new Matriz();
+	public static void transpoemMatriz(Matriz matriz, Matriz transposta) {
 
-		transposta.geraMatriz();
 		for (int linha = 0; linha < Info.tamMax; linha++) {
 			for (int coluna = 0; coluna < Info.tamMax; coluna++) {
 				transposta.matriz[linha][coluna] = matriz.matriz[coluna][linha];
 			}
 		}
-		transposta.imprimeMatriz();
-
-		return transposta;
 	}
 
-	public static void main(String[] args) {
-
-		Matriz m = new Matriz();
-		Matriz transp = new Matriz();
-		
-		m.geraMatriz();
-		m.imprimeMatriz();
-
-		transp.transpoemMatriz(m);
-		transp.imprimeMatriz();
-	}
-
-	
 }
