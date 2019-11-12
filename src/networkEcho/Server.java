@@ -32,14 +32,14 @@ public class Server {
 			ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
 
 			// recebe objeto do Cliente
-			JSONArray msgRecebida = (JSONArray) input.readObject();
+			Matriz matrizRecebida = (Matriz) input.readObject();
 
 			System.out.println("Mensagem recebida...");
-			System.out.println(msgRecebida);
+			System.out.println(matrizRecebida);
 
 			// faz a transposta da matriz recebida
 			JSONArray transposta = new JSONArray();
-			transposta = Mensagem.geraTransposta(msgRecebida);
+			//transposta = Mensagem.geraTransposta(matrizRecebida);
 			
 			System.out.println("Mensagem gerada...");
 			System.out.println(transposta);
