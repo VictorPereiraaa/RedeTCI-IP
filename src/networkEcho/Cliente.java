@@ -7,7 +7,7 @@ import java.net.Socket;
 
 public class Cliente {
 
-	// private static boolean isRunning = true;
+	private static boolean isRunning = true; 
 	private static Socket socket;
 	private static ObjectOutputStream output;
 	private static ObjectInputStream input;
@@ -27,37 +27,36 @@ public class Cliente {
 	// Método que encerra a conexao cliente-servidor
 	private static void encerraConexao() throws IOException {
 		input.close();
-		output.close();
+		output.close(); 
 		socket.close();
 	}
 
-	public static void main(String[] args) throws ClassNotFoundException, InterruptedException, IOException  {
+	public static void main(String[] args) throws ClassNotFoundException, InterruptedException, IOException {
 		try {
-
-			iniciaConexao();
-			iniciaStreams();
-
-			// while (isRunning) {
-
-			// gera a matriz para o cliente
-			Matriz matriz = new Matriz();
-			matriz.geraMatriz();
 			
-			//enviando matriz
-			System.out.println("Enviando a matriz...");
-			Matriz.imprimeMatriz(matriz);
-			output.writeObject(matriz);
-			output.flush(); // libera buffer para envio
-			System.out.println("Matriz enviada.");
+			while (isRunning) {
+				iniciaConexao();
+				iniciaStreams();
 
-			// recebe a matriz transposta do servidor
-			System.out.println("Matriz recebida...");
-			matriz = (Matriz) input.readObject();
-			Matriz.imprimeMatriz(matriz);
+				// gera a matriz para o cliente
+				Matriz matriz = new Matriz();
+				matriz.geraMatriz();
 
-			// Thread.sleep(Info.delay);
-			// }
+				// enviando matriz
+				System.out.println("Enviando a matriz...");
+				Matriz.imprimeMatriz(matriz);
+				output.writeObject(matriz);
+				output.flush(); // libera buffer para envio
+				System.out.println("Matriz enviada.");
 
+				// recebe a matriz transposta do servidor
+				System.out.println("Matriz recebida...");
+				matriz = (Matriz) input.readObject();
+				Matriz.imprimeMatriz(matriz);
+				System.out.println();
+
+				Thread.sleep(Info.delay);
+			}
 			encerraConexao();
 
 		} catch (IOException e) {
