@@ -25,9 +25,10 @@ public class ClienteHandler extends Thread {
 			ObjectOutputStream output = new ObjectOutputStream(cliente.getOutputStream());
 			ObjectInputStream input = new ObjectInputStream(cliente.getInputStream());
 
+			
 			// recebe matriz de Cliente
 			Matriz matrizRecebida = (Matriz) input.readObject();
-			System.out.println("Mensagem recebida...");
+			System.out.println("Mensagem recebida..." );
 			Matriz.imprimeMatriz(matrizRecebida);
 			
 			//transpoem matriz

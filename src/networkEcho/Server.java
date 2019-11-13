@@ -20,14 +20,13 @@ public class Server {
 		return socket;
 	}
 
-	public static void main(String[] args) throws ClassNotFoundException {
+	public Server() {
 		try {
-			Server server = new Server(); 
-			System.out.println(Info.getNomeVersao());
+		
 			System.out.println("Aguardando conexão...");
-			server.criaServer(Info.porta);
+			criaServer(Info.porta);
 			while (true) {
-				Socket socket = server.esperaConexao(); // protocolo
+				Socket socket = esperaConexao(); // protocolo
 				System.out.println("Cliente conectado.");
 				
 				Thread clienteHandler = new ClienteHandler(socket);
