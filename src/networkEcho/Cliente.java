@@ -5,6 +5,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Random;
+import java.util.Scanner;
+
 
 public class Cliente {
 
@@ -32,7 +34,14 @@ public class Cliente {
 	public Cliente() throws ClassNotFoundException, InterruptedException {
 		try {
 			Random randGen = new Random();
-			
+			Scanner scanner = new Scanner(System.in);
+			System.out.println("digite a altura da matriz");
+		    String strAltura = scanner.nextLine();
+			System.out.println("digite a largura da matriz");
+		    String strLargura = scanner.nextLine();
+		    scanner.close();
+
+		    
 			while (isRunning) {
 				if (randGen.nextInt(20) == 0) {
 					System.out.println("Encerrando cliente...");
@@ -41,12 +50,14 @@ public class Cliente {
 					iniciaConexao();
 					
 					// gera a matriz para o cliente
-					Matriz matriz = new Matriz();
-					matriz.geraMatriz();
+					int altura = Integer.parseInt(strAltura);
+					int largura = Integer.parseInt(strLargura);
+					Matriz matriz = new Matriz(altura,largura);
+					matriz.populaMatiz();
 
 					// enviando matriz
 					System.out.println("Enviando a matriz...");
-					Matriz.imprimeMatriz(matriz);
+					matriz.imprimeMatriz();
 					output.writeObject(matriz);
 					output.flush(); // libera buffer para envio
 					System.out.println("Matriz enviada.");
@@ -54,7 +65,7 @@ public class Cliente {
 					// recebe a matriz transposta do servidor
 					System.out.println("Matriz recebida...");
 					matriz = (Matriz) input.readObject();
-					Matriz.imprimeMatriz(matriz);
+					matriz.imprimeMatriz();
 					System.out.println();
 
 					Thread.sleep(Info.delay);

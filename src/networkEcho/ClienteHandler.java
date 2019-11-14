@@ -29,14 +29,12 @@ public class ClienteHandler extends Thread {
 			// recebe matriz de Cliente
 			Matriz matrizRecebida = (Matriz) input.readObject();
 			System.out.println("Mensagem recebida..." );
-			Matriz.imprimeMatriz(matrizRecebida);
+			matrizRecebida.imprimeMatriz();
 			
 			//transpoem matriz
-			Matriz transposta = new Matriz();
-			transposta.geraMatriz();
-			Matriz.transpoemMatriz(matrizRecebida, transposta);
+			Matriz transposta = matrizRecebida.transpoemMatriz();
 			System.out.println("Transposta gerada: ");
-			Matriz.imprimeMatriz(transposta);
+			transposta.imprimeMatriz();
 			System.out.println();
 			
 			//devolve a matriz transposta para Cliente

@@ -8,38 +8,51 @@ public class Matriz implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int[][] matriz;
 	private static final Random randGen = new Random();
+	private int altura;
+	private int largura;
 
-	public void setMatriz(int[][] m) {
-		this.matriz = m;
+	public Matriz(int altura, int largura) {
+		this.altura = altura;
+		this.largura = largura;
+		this.matriz = new int[this.altura][this.largura];		
 	}
-
-	public void geraMatriz() {
-		this.matriz = new int[Info.tamMax][Info.tamMax];
-
-		for (int linha = 0; linha < Info.tamMax; linha++) {
-			for (int coluna = 0; coluna < Info.tamMax; coluna++) {
+	
+	public void populaMatiz() {
+		for (int linha = 0; linha < altura; linha++) {
+			for (int coluna = 0; coluna < largura; coluna++) {
 				this.matriz[linha][coluna] = randGen.nextInt(50);
 			}
 		}
 	}
-
-	public static void imprimeMatriz(Matriz mat){
-
-		for (int linha = 0; linha < Info.tamMax; linha++) {
-			for (int coluna = 0; coluna < Info.tamMax; coluna++) {
-				System.out.print(mat.matriz[linha][coluna] + " ");
+	
+	public boolean verificaParametros() {
+		if(altura < 0 ) {
+			System.out.println("altura informada menor do que zero");
+		} else if (largura < 0 ) {
+			System.out.print("largura informada é menor do que zero");
+		}
+		
+		return false;
+	}
+	
+	public void imprimeMatriz(){
+		
+		for (int linha = 0; linha < altura; linha++) {
+			for (int coluna = 0; coluna < largura; coluna++) {
+				System.out.print(matriz[linha][coluna] + " ");
 			}
-			System.out.println();
+			System.out.print("\n");
 		}
 	}
 
-	public static void transpoemMatriz(Matriz matriz, Matriz transposta) {
-
-		for (int linha = 0; linha < Info.tamMax; linha++) {
-			for (int coluna = 0; coluna < Info.tamMax; coluna++) {
-				transposta.matriz[linha][coluna] = matriz.matriz[coluna][linha];
+	public Matriz transpoemMatriz() {
+		Matriz transposta = new Matriz(largura, altura);
+		for (int linha = 0; linha < altura; linha++) {
+			for (int coluna = 0; coluna < largura; coluna++) {
+				transposta.matriz[linha][coluna] = matriz[coluna][linha];
 			}
 		}
+		return transposta;
 	}
 
 }
